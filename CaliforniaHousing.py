@@ -31,13 +31,17 @@ y_test_t  = torch.tensor(y_test.values,  dtype=torch.float32)
 train_ds = TensorDataset(X_train_t, y_train_t)
 train_loader = DataLoader(train_ds, batch_size=32, shuffle=True)
 
-# 4. Define a simple ANN model
-# One hidden layer with 32 units + ReLU activation
+# 4. Define an ANN model with multiple hidden layers
+# Adding extra layers: 64 -> 32 -> 16 units for better capacity
 dim = X_train_t.shape[1]
 model = nn.Sequential(
-    nn.Linear(dim, 32),  # input to hidden
-    nn.ReLU(),            # non-linearity
-    nn.Linear(32, 1)      # hidden to output
+    nn.Linear(dim, 64),  # input to first hidden
+    nn.ReLU(),
+    nn.Linear(64, 32),    # second hidden
+    nn.ReLU(),
+    nn.Linear(32, 16),    # third hidden
+    nn.ReLU(),
+    nn.Linear(16, 1)      # hidden to output
 )
 
 # Setup optimizer and loss function
